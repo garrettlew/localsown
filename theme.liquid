@@ -1,0 +1,196 @@
+<!doctype html>
+<!--[if IE 9]> <html class="ie9 supports-no-js" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="supports-no-js" lang="{{ shop.locale }}"> <!--<![endif]-->
+<head>
+  <meta name="bold-checkout-styles" content="{{ 'bold-checkout.css' | asset_url }}">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_primary }}">
+  <link rel="canonical" href="{{ canonical_url }}">
+  
+  {% if template == blank and canonical_url contains 'a/refer-a-friend/redeem' %}
+    <!-- include conjured referral og:properties for facebook sharing -->
+    <meta property="og:image" content="https://res.cloudinary.com/localsown/image/upload/c_pad,h_628,w_1200/v1523992714/LO_s_Flyer_wxk9gl.png"/>
+    <meta property="og:image:width" content="1200"/>
+    <meta property="og:image:height" content="628"/>
+    <meta property="og:title" content="LocalsOwn"/>
+    <meta property="og:description" content="Use the link to share good discounts on great local food!"/>
+  {% endif %}
+
+  {% if settings.favicon %}
+    <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png" />
+  {% endif %}
+
+  <title>
+  {{ page_title }}{% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}{% endif %}{% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+  </title>
+
+  {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+  {% endif %}
+
+  {% include 'social-meta-tags' %}
+
+  <script>
+    document.documentElement.className = document.documentElement.className.replace('supports-no-js', 'supports-js');
+
+    var theme = {
+      mapStrings: {
+        addressError: {{ 'homepage.map.address_error' | t | json }},
+        addressNoResults: {{ 'homepage.map.address_no_results' | t | json }},
+        addressQueryLimit: {{ 'homepage.map.address_query_limit_html' | t | json }},
+        authError: {{ 'homepage.map.auth_error_html' | t | json }}
+      }
+    }
+  </script>
+
+  {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
+
+  <!-- Google Fonts -->
+  {% if settings.type_base_family contains 'Google' %}
+    {% assign type_base_parts = settings.type_base_family | split: '_' %}
+    {% capture base_google_url %}{{ type_base_parts[1] }}:400,700{% endcapture %}
+    {{ '//fonts.googleapis.com/css?family=' | append: base_google_url | stylesheet_tag }}
+  {% endif %}
+  {% if settings.type_header_family contains 'Google' %}
+    {% unless settings.type_header_family contains type_base_parts[1] %}
+      {% assign type_header_parts = settings.type_header_family | split: '_' %}
+      {% capture header_google_url %}{{ type_header_parts[1] }}:400,700{% endcapture %}
+      {{ '//fonts.googleapis.com/css?family=' | append: header_google_url | stylesheet_tag }}
+    {% endunless %}
+  {% endif %}
+
+  {% include 'buddha-megamenu-before' %}
+  {% include 'buddha-megamenu' %}
+  {{ content_for_header }}
+
+  {{ 'jquery-1.11.0.min.js' | asset_url | script_tag }}
+  {{ 'modernizr.min.js' | asset_url | script_tag }}
+  
+  {{ 'responsiveslides.css'         | asset_url | stylesheet_tag }}
+  {{ 'responsiveslides.min.js'     | asset_url | script_tag }}
+ 
+  <script>
+      $(function() {
+        $(".rslides").responsiveSlides({
+          auto: true,             // Boolean: Animate automatically, true or false
+          speed: 500,             // Integer: Speed of the transition, in milliseconds
+          timeout: 4000,          // Integer: Time between slide transitions, in milliseconds
+          pager: true,           // Boolean: Show pager, true or false
+          nav: false,             // Boolean: Show navigation, true or false
+          random: false,          // Boolean: Randomize the order of the slides, true or false
+          pause: false,           // Boolean: Pause on hover, true or false
+          pauseControls: false,    // Boolean: Pause when hovering controls, true or false
+          prevText: "Previous",   // String: Text for the "previous" button
+          nextText: "Next",       // String: Text for the "next" button
+          maxwidth: "",           // Integer: Max-width of the slideshow, in pixels
+          navContainer: "",       // Selector: Where controls should be appended to, default is after the 'ul'
+          manualControls: "",     // Selector: Declare custom pager navigation
+          namespace: "centered-btns",   // String: Change the default namespace used
+          before: function(){},   // Function: Before callback
+          after: function(){}     // Function: After callback
+        });
+      });
+  </script>
+
+  <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'lazysizes.min.js' | asset_url }}" async="async"></script><!--<![endif]-->
+  <!--[if lte IE 9]><script src="{{ 'lazysizes.min.js' | asset_url }}"></script><![endif]-->
+
+  {% if template.directory == 'customers' %}
+    {{ 'shopify_common.js' | shopify_asset_url | script_tag }}
+  {% endif %}
+  
+  <!--  FULLSTORY  -->
+<script>
+window['_fs_debug'] = false;
+window['_fs_host'] = 'fullstory.com';
+window['_fs_org'] = 'AFRH5';
+window['_fs_namespace'] = 'FS';
+(function(m,n,e,t,l,o,g,y){
+    if (e in m) {if(m.console && m.console.log) { m.console.log('FullStory namespace conflict. Please set window["_fs_namespace"].');} return;}
+    g=m[e]=function(a,b){g.q?g.q.push([a,b]):g._api(a,b);};g.q=[];
+    o=n.createElement(t);o.async=1;o.src='https://'+_fs_host+'/s/fs.js';
+    y=n.getElementsByTagName(t)[0];y.parentNode.insertBefore(o,y);
+    g.identify=function(i,v){g(l,{uid:i});if(v)g(l,v)};g.setUserVars=function(v){g(l,v)};
+    y="rec";g.shutdown=function(i,v){g(y,!1)};g.restart=function(i,v){g(y,!0)};
+    g.identifyAccount=function(i,v){o='account';v=v||{};v.acctId=i;g(o,v)};
+    g.clearUserCookie=function(){};
+})(window,document,window['_fs_namespace'],'script','user');
+</script>
+  
+  {% include 'bold-common' %}
+  {% include 'bold-ro-init' %}
+  
+</head>
+
+<body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | split: '.' | first | handle }}">
+  {% include 'buddha-megamenu-wireframe' %}
+
+  <a class="in-page-link visually-hidden skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
+
+  {% section "header" %}
+
+    {% comment %}
+    <hr class="small--hide hr--small">
+    {% endcomment %}
+
+  <div class="site-wrapper">
+
+    <div class="grid">
+
+      {% section "sidebar" %}
+
+      <main class="main-content grid__item medium-up--four-fifths" id="MainContent" role="main">
+        {% unless template.name == 'index' %}
+          <hr class="hr--border-top small--hide">
+        {% endunless %}
+        {% if settings.show_breadcrumb_nav and template.name != 'index' %}
+          {% include 'breadcrumb-nav' %}
+        {% endif %}
+        {{ content_for_layout }}
+      </main>
+
+    </div>
+
+    <hr>
+
+    {% section "footer" %}
+
+  </div>
+
+  {% if template.name == 'product' or template.name == 'index' %}
+    {{ 'option_selection.js' | shopify_asset_url | script_tag }}
+    <script>
+      // Set a global variable for theme.js to use on product single init
+      window.theme = window.theme || {};
+      theme.moneyFormat = {{ shop.money_format | json }};
+      theme.productSingleObject = {{ product | json }};
+    </script>
+  {% endif %}
+
+  {{ 'theme.js' | asset_url | script_tag }}
+  
+<!--  custom  -->
+  {% include 'ajaxify-cart' %}
+  
+{% include 'subscription-theme-footer' %}
+ {% include 'sweettooth-initializer' %}
+
+ {% include 'sweettooth-tab-widget' %}
+  
+  <!-- Include rivets-cart.min.js -->
+  {{ 'rivets-cart.min.js' | asset_url | script_tag }}
+
+  <!-- Initialise Cart.js once the page has loaded -->
+  <script type="text/javascript">
+    $(function() {
+      CartJS.init({{ cart | json }}, {
+                  "moneyFormat": "{{ shop.money_format }}",
+                  "moneyWithCurrencyFormat": "{{ shop.money_with_currency_format }}"
+                  });
+    });
+  </script>
+
+</body>
+</html>
